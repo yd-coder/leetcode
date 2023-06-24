@@ -132,7 +132,7 @@ export default ProblemDescription;
 
 /* 获取当前题目数据 */
 function useGetCurrentProblem(problemId: string) {
-	const [currentProblem, setCurrentProblem] = useState(null);
+	const [currentProblem, setCurrentProblem] = useState<Problem | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [problemDifficultyClass, setProblemDifficultyClass] = useState<string>("");
 

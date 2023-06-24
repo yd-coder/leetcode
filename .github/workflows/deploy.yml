@@ -16,11 +16,12 @@ jobs:
           cache: npm
       - run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: Build my App
+        run: npm run build && npm run export && touch ./out/.nojekyll
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
-          branch: gh-pages
-          folder: out
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: out # The folder the action should deploy.

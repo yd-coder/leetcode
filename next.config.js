@@ -8,7 +8,13 @@ const nextConfig = {
    */
   images: {
     unoptimized: true 
-  }
+  },
+  // 启用客户端路由，以使 Next.js 应用程序在 GitHub Pages 上正常工作
+  generateBuildId: async () => {
+    return 'build'
+  },
+  assetPrefix: './',
+  basePath: ''
 }
 
 module.exports = nextConfig

@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 
+/* 个人登录模态框状态管理 */
 type AuthModalState = {
 	isOpen: boolean;
 	type: "login" | "register" | "forgotPassword";
@@ -7,7 +8,7 @@ type AuthModalState = {
 
 const initalAuthModalState: AuthModalState = {
 	isOpen: false,
-	type: "login",
+	type: "register",
 };
 
 export const authModalState = atom<AuthModalState>({

@@ -1,7 +1,4 @@
-# LeetCode Clone Youtube Tutorial
+# LeetCode
 
-### Built With React, NextJS, TypeScript, TailwindCSS, Firebase
+### Built With React, NextJS, TypeScript, TailwindCSS, Recoil, pnpm
 
-# [Demo](https://youtu.be/igqiduZR-Gg)
-
-![Screenshot of App](https://i.ibb.co/b3XDkdN/Full-Stack-1.png)

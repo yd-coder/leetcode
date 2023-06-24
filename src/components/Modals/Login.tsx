@@ -1,93 +1,92 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { toast } from "react-toastify";
+import Image from "next/image";
+import {IoIosCheckbox} from "react-icons/io";
+import {MdCheckBoxOutlineBlank} from "react-icons/md";
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
+	const router = useRouter();
+	const [inputs, setInputs] = useState({ phone: "", password: "" });
+	const [isAgree, setIsAgree] = useState(false);
+
 	const setAuthModalState = useSetRecoilState(authModalState);
+	/* 切换表单类型 */
 	const handleClick = (type: "login" | "register" | "forgotPassword") => {
 		setAuthModalState((prev) => ({ ...prev, type }));
 	};
-	const [inputs, setInputs] = useState({ email: "", password: "" });
-	const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
-	const router = useRouter();
+	/* 处理表单数据 */
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
-
+	/* 同意协议 */
+	const handleAgree = () => {
+		setIsAgree((prev) => !prev);
+	}
+    /* 登录 */
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!inputs.email || !inputs.password) return alert("Please fill all fields");
+		if (!inputs.phone || !inputs.password) return toast.error("请完整填写表单", {position: "top-center"});
 		try {
-			const newUser = await signInWithEmailAndPassword(inputs.email, inputs.password);
-			if (!newUser) return;
-			router.push("/");
+			// router.push("/");
 		} catch (error: any) {
 			toast.error(error.message, { position: "top-center", autoClose: 3000, theme: "dark" });
 		}
 	};
 
-	useEffect(() => {
-		if (error) toast.error(error.message, { position: "top-center", autoClose: 3000, theme: "dark" });
-	}, [error]);
 	return (
-		<form className='space-y-6 px-6 pb-4' onSubmit={handleLogin}>
-			<h3 className='text-xl font-medium text-white'>Sign in to LeetClone</h3>
+		<form className='space-y-5 px-6 pb-4' onSubmit={handleLogin}>
+			<Image alt={'logo'} src={'./logo.svg'} width={59} height={22} className='mx-auto'/>
+			<h3 className='text-xl font-medium text-white'>账号密码登录</h3>
 			<div>
-				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
-					Your Email
-				</label>
 				<input
 					onChange={handleInputChange}
-					type='email'
-					name='email'
-					id='email'
+					type='phone'
+					name='phone'
+					id='phone'
 					className='
-            border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-            bg-gray-600 border-gray-500 placeholder-gray-400 text-white
-        '
-					placeholder='name@company.com'
+            border-2 outline-none sm:text-sm rounded-lg focus:border-blue-500 block w-full
+        	p-2.5 bg-dark-input border-transparent placeholder-gray-400 text-white'
+					placeholder='手机/邮箱'
 				/>
 			</div>
 			<div>
-				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Your Password
-				</label>
 				<input
 					onChange={handleInputChange}
 					type='password'
 					name='password'
 					id='password'
 					className='
-            border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-            bg-gray-600 border-gray-500 placeholder-gray-400 text-white
-        '
-					placeholder='*******'
+            border-2 outline-none sm:text-sm rounded-lg focus:border-blue-500 block w-full
+        	p-2.5 bg-dark-input border-transparent placeholder-gray-400 text-white'
+					placeholder='输入密码'
 				/>
 			</div>
 
 			<button
 				type='submit'
-				className='w-full text-white focus:ring-blue-300 font-medium rounded-lg
-                text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
-            '
+				className='w-full focus:ring-blue-300 font-medium rounded-lg
+            text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s'
 			>
-				{loading ? "Loading..." : "Log In"}
+				登录
 			</button>
-			<button className='flex w-full justify-end' onClick={() => handleClick("forgotPassword")}>
-				<a href='#' className='text-sm block text-brand-orange hover:underline w-full text-right'>
-					Forgot Password?
-				</a>
-			</button>
-			<div className='text-sm font-medium text-gray-300'>
-				Not Registered?{" "}
-				<a href='#' className='text-blue-700 hover:underline' onClick={() => handleClick("register")}>
-					Create account
-				</a>
+
+			<div className='flex justify-between'>
+				<div className='text-sm font-medium text-gray-300' onClick={() => handleClick("register")}>
+					验证码登录
+				</div>
+				<div className='text-sm font-medium text-gray-300' onClick={() => handleClick("forgotPassword")}>
+					忘记密码
+				</div>
+			</div>
+
+			<div className='w-full flex justify-center items-center'>
+				{isAgree ? <IoIosCheckbox className='h-5 w-5 text-dark-blue-s mr-1' onClick={handleAgree}/> : <MdCheckBoxOutlineBlank className='h-5 w-5 text-gray-400 hover:text-dark-blue-s mr-1' onClick={handleAgree}/>}
+				<span className='text-xs font-medium text-gray-400'>同意力扣<a className='text-gray-300 cursor-pointer'>《用户协议》</a>和<a
+					className='text-gray-300 cursor-pointer'>《隐私协议》</a></span>
 			</div>
 		</form>
 	);

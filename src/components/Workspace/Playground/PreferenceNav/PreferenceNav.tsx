@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineSetting } from "react-icons/ai";
 import { ISettings } from "../Playground";
 import SettingsModal from "@/components/Modals/SettingsModal";
@@ -55,14 +55,14 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ setSettings, settings }) 
 					<div className='h-4 w-4 text-dark-gray-6 font-bold text-lg'>
 						<AiOutlineSetting />
 					</div>
-					<div className='preferenceBtn-tooltip'>Settings</div>
+					<div className='preferenceBtn-tooltip'>代码编辑器设置</div>
 				</button>
 
 				<button className='preferenceBtn group' onClick={handleFullScreen}>
 					<div className='h-4 w-4 text-dark-gray-6 font-bold text-lg'>
 						{!isFullScreen ? <AiOutlineFullscreen /> : <AiOutlineFullscreenExit />}
 					</div>
-					<div className='preferenceBtn-tooltip'>Full Screen</div>
+					<div className='preferenceBtn-tooltip'>全屏</div>
 				</button>
 			</div>
 			{settings.settingsModalIsOpen && <SettingsModal settings={settings} setSettings={setSettings} />}

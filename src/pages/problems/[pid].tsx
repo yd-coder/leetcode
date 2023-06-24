@@ -1,8 +1,8 @@
 import Topbar from "@/components/Topbar/Topbar";
 import Workspace from "@/components/Workspace/Workspace";
 import useHasMounted from "@/hooks/useHasMounted";
-import { problems } from "@/utils/problems";
-import { Problem } from "@/utils/types/problem";
+import { problems } from "@/mockProblems/problems/index";
+import { Problem } from "@/mockProblems/types/problem";
 import React from "react";
 
 type ProblemPageProps = {

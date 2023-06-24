@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Split from "react-split";
 import ProblemDescription from "./ProblemDescription/ProblemDescription";
 import Playground from "./Playground/Playground";
-import { Problem } from "@/utils/types/problem";
+import { Problem } from "@/mockProblems/types/problem";
 import Confetti from "react-confetti";
 import useWindowSize from "@/hooks/useWindowSize";
 

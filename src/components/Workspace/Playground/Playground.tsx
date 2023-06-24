@@ -1,17 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PreferenceNav from "./PreferenceNav/PreferenceNav";
 import Split from "react-split";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
-import { Problem } from "@/utils/types/problem";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, firestore } from "@/firebase/firebase";
+import { Problem } from "@/mockProblems/types/problem";
 import { toast } from "react-toastify";
-import { problems } from "@/utils/problems";
+import { problems } from "@/mockProblems/problems/index";
 import { useRouter } from "next/router";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 type PlaygroundProps = {
@@ -38,20 +35,11 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		dropdownIsOpen: false,
 	});
 
-	const [user] = useAuthState(auth);
 	const {
 		query: { pid },
 	} = useRouter();
 
 	const handleSubmit = async () => {
-		if (!user) {
-			toast.error("Please login to submit your code", {
-				position: "top-center",
-				autoClose: 3000,
-				theme: "dark",
-			});
-			return;
-		}
 		try {
 			userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
 			const cb = new Function(`return ${userCode}`)();
@@ -60,7 +48,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			if (typeof handler === "function") {
 				const success = handler(cb);
 				if (success) {
-					toast.success("Congrats! All tests passed!", {
+					toast.success("恭喜！所有测试都通过了！", {
 						position: "top-center",
 						autoClose: 3000,
 						theme: "dark",
@@ -70,10 +58,6 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 						setSuccess(false);
 					}, 4000);
 
-					const userRef = doc(firestore, "users", user.uid);
-					await updateDoc(userRef, {
-						solvedProblems: arrayUnion(pid),
-					});
 					setSolved(true);
 				}
 			}
@@ -82,7 +66,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			if (
 				error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:")
 			) {
-				toast.error("Oops! One or more test cases failed", {
+				toast.error("解答错误！一个或多个测试用例失败", {
 					position: "top-center",
 					autoClose: 3000,
 					theme: "dark",
@@ -99,12 +83,8 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 
 	useEffect(() => {
 		const code = localStorage.getItem(`code-${pid}`);
-		if (user) {
-			setUserCode(code ? JSON.parse(code) : problem.starterCode);
-		} else {
-			setUserCode(problem.starterCode);
-		}
-	}, [pid, user, problem.starterCode]);
+		setUserCode(code ? JSON.parse(code) : problem.starterCode);
+	}, [pid, problem.starterCode]);
 
 	const onChange = (value: string) => {
 		setUserCode(value);
@@ -116,6 +96,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			<PreferenceNav settings={settings} setSettings={setSettings} />
 
 			<Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
+				{/* 代码编辑器 */}
 				<div className='w-full overflow-auto'>
 					<CodeMirror
 						value={userCode}
@@ -126,10 +107,10 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 					/>
 				</div>
 				<div className='w-full px-5 overflow-auto'>
-					{/* testcase heading */}
+					{/* 测试用例 */}
 					<div className='flex h-10 items-center space-x-6'>
 						<div className='relative flex h-full flex-col justify-center cursor-pointer'>
-							<div className='text-sm font-medium leading-5 text-white'>Testcases</div>
+							<div className='text-sm font-medium leading-5 text-white'>测试用例</div>
 							<hr className='absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white' />
 						</div>
 					</div>
@@ -155,11 +136,11 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 					</div>
 
 					<div className='font-semibold my-4'>
-						<p className='text-sm font-medium mt-4 text-white'>Input:</p>
+						<p className='text-sm font-medium mt-4 text-white'>输入：</p>
 						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
 							{problem.examples[activeTestCaseId].inputText}
 						</div>
-						<p className='text-sm font-medium mt-4 text-white'>Output:</p>
+						<p className='text-sm font-medium mt-4 text-white'>输出：</p>
 						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
 							{problem.examples[activeTestCaseId].outputText}
 						</div>

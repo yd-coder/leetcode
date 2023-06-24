@@ -2,6 +2,7 @@ import { BsCheckLg, BsChevronDown } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { ISettings } from "../Workspace/Playground/Playground";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import React from "react";
 
 const EDITOR_FONT_SIZES = ["12px", "13px", "14px", "15px", "16px", "17px", "18px"];
 
@@ -32,7 +33,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ setSettings, settings }) 
 					<div className='my-8 inline-block min-w-full transform rounded-[13px] text-left transition-all bg-overlay-3 md:min-w-[420px] shadow-level4 shadow-lg p-0 bg-[rgb(40,40,40)] w-[600px] !overflow-visible opacity-100 scale-100'>
 						{/* setting header */}
 						<div className='flex items-center border-b px-5 py-4 text-lg font-medium  border-dark-divider-border-2'>
-							Settings
+							代码编辑器设置
 							<button
 								className='ml-auto cursor-pointer rounded transition-all'
 								onClick={() => setSettings({ ...settings, settingsModalIsOpen: false })}
@@ -44,9 +45,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ setSettings, settings }) 
 						<div className='px-6 pt-4 pb-6'>
 							<div className='mt-6 flex justify-between first:mt-0'>
 								<div className='w-[340px]'>
-									<h3 className=' text-base font-medium'>Font size</h3>
-									<h3 className='text-label-3  mt-1.5'>
-										Choose your preferred font size for the code editor.
+									<h3 className=' text-base font-medium'>字体设置</h3>
+									<h3 className='text-dark-gray-6 mt-1.5'>
+										调整适合你的字体大小。
 									</h3>
 								</div>
 								<div className='w-[170px]'>
@@ -62,7 +63,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ setSettings, settings }) 
 										{/* Show dropdown for fontsizes */}
 										{settings.dropdownIsOpen && (
 											<ul
-												className='absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1'
+												className='absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg w-full bg-dark-layer-1'
 												style={{
 													filter: "drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)",
 												}}

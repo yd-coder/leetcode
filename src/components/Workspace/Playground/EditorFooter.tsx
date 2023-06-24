@@ -19,16 +19,16 @@ const EditorFooter: React.FC<EditorFooterProps> = ({ handleSubmit }) => {
 				</div>
 				<div className='ml-auto flex items-center space-x-4'>
 					<button
-						className='px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-dark-fill-3  hover:bg-dark-fill-2 text-dark-label-2 rounded-lg'
+						className='px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-dark-fill-3  hover:bg-dark-fill-2 text-dark-label-2 rounded'
 						onClick={handleSubmit}
 					>
-						Run
+						▶ 执行代码
 					</button>
 					<button
-						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded-lg'
+						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded'
 						onClick={handleSubmit}
 					>
-						Submit
+						提交
 					</button>
 				</div>
 			</div>

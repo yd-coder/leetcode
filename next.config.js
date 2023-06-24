@@ -10,7 +10,7 @@ const nextConfig = {
     unoptimized: true 
   },
   assetPrefix: '/leetcode/',
-  basePath: ''
+  basePath: '/leetcode'
 }
 
 module.exports = nextConfig

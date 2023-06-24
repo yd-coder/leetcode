@@ -7,9 +7,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
 	const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (success) {
-			toast.success("Password reset email sent", { position: "top-center", autoClose: 3000, theme: "dark" });
-		}
+		toast.success("验证码已发送到您的手机号或电子邮箱", { position: "top-center", autoClose: 3000, theme: "dark" });
 	};
 
 	return (
